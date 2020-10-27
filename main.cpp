@@ -18,6 +18,10 @@ std::mt19937 gen(rd());
 std::uniform_real_distribution<double> dis(a, b);
 TextTable tu, tm;
 int experiment_number = 1;
+// declared here to avoid creation every time using move_with possibility
+std::random_device rd2;
+std::mt19937 gen2(rd2());
+std::uniform_real_distribution<double> dis2(0, 1);
 
 double get_fucn_val(double x) {
     return ((1 - x) * (1 - x) + exp(x));
@@ -28,8 +32,8 @@ double get_multi_fucn_val(double x) {
 }
 
 bool move_with_possibility(double& delta, double& current_temperature) {
-    double m = rand() % 100;
-    if (m < 100 * exp(-delta / current_temperature)) {
+    double m = dis2(gen2);
+    if (m < exp(-delta / current_temperature)) {
         return true;
     } else {
         return false;
